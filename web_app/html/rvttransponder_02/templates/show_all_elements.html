@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Embedded SVG</title>
+  <script src="js/raphael.min.js" ></script>
+  
+  <style>
+		body, html{
+		margin : 0;
+		padding : 0;
+		overflow : hidden;
+		height:100%;
+		width:100%;
+	}
+	#wrap{
+		height: 100%;
+		width: 100%;
+		background-color: orange;
+		
+	}
+
+	/*  Make the SVG canvas fill its container - both initially and after resizing */
+	svg { height: 100%; width: 100%; }
+	
+	/*SIDE NAV*/
+	.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    font-family: verdana;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+  </style>
+  
+  <script>
+		var paper;
+		var data;
+		var transform;
+		
+	  window.onload = function() {	
+		paper = Raphael("wrap");
+		// !! As of Raphael 2.1.0, specifying true as the `fit` parameter to `setViewBox()` translates into an invalid value for the SVG `preserveAspectRatio` attribute: "meet". To rule out this problem, we set that attribute directly.
+		paper.canvas.setAttribute('preserveAspectRatio', 'none'); // always scale to fill container, without preserving aspect ratio.
+		
+		
+		// json work**************
+		
+		//var data = JSON.parse('{"doors":[{"doorid":"324626","toroomid":"324835","fromroomid":"-1","width":"3.000000","location":"-43.8136672570678,5.2816496368479,0"},{"doorid":"324658","toroomid":"324817","fromroomid":"324835","width":"3.000000","location":"-23.8136672570678,11.2816496368478,0"},{"doorid":"324728","toroomid":"324820","fromroomid":"324835","width":"3.000000","location":"4.18633274293216,11.2816496368477,0"},{"doorid":"324755","toroomid":"324829","fromroomid":"324835","width":"3.000000","location":"4.18633274293214,-0.718350363152253,0"},{"doorid":"324778","toroomid":"324823","fromroomid":"324835","width":"3.000000","location":"24.1863327429322,11.2816496368477,0"},{"doorid":"324796","toroomid":"324832","fromroomid":"324835","width":"3.000000","location":"24.1863327429322,-0.718350363152317,0"},{"doorid":"326436","toroomid":"324820","fromroomid":"324817","width":"3.000000","location":"-19.8136672570678,23.2816496368479,0"},{"doorid":"327066","toroomid":"326957","fromroomid":"-1","width":"3.000000","location":"-47.2150852094242,27.3702424433933,0"},{"doorid":"327251","toroomid":"324817","fromroomid":"324835","width":"3.000000","location":"-33.8136672570678,11.2816496368479,0"}],"rooms":[{"id":"324817","roomnumber":"1","roomname":"Room 1","roomvertices":[-20.1470005904011,34.9483163035146,0,-33.4803339237345,34.9483163035146,0,-33.4803339237345,22.4483163035145,0,-43.4803339237345,22.4483163035146,0,-43.4803339237345,13.0661735703538,0,-43.4803339237345,11.6149829701812,0,-20.1470005904012,11.6149829701812,0]},{"id":"324820","roomnumber":"2","roomname":"Room 2","roomvertices":[-19.4803339237345,11.6149829701812,0,11.8529994095988,11.6149829701811,0,11.8529994095989,35.2816496368479,0,-19.4803339237345,35.2816496368479,0]},{"id":"324823","roomnumber":"3","roomname":"Room 3","roomvertices":[35.8529994095988,11.614982970181,0,35.8529994095988,34.9483163035146,0,12.5196660762655,34.9483163035146,0,12.5196660762655,11.6149829701811,0]},{"id":"324826","roomnumber":"4","roomname":"Room 4","roomvertices":[-43.4803339237345,-1.05168369648543,0,-43.4803339237345,-20.3850170298188,0,-20.1470005904012,-20.3850170298188,0,-20.1470005904012,-1.05168369648551,0]},{"id":"324829","roomnumber":"5","roomname":"Room 5","roomvertices":[-19.4803339237346,-20.3850170298188,0,11.8529994095988,-20.3850170298188,0,11.8529994095988,-1.05168369648561,0,-19.4803339237345,-1.05168369648551,0]},{"id":"324832","roomnumber":"6","roomname":"Room 6","roomvertices":[12.5196660762654,-20.3850170298188,0,35.8529994095988,-20.3850170298188,0,35.8529994095988,-1.05168369648569,0,12.5196660762655,-1.05168369648561,0]},{"id":"324835","roomnumber":"7","roomname":"Room 7","roomvertices":[-43.4803339237345,10.9483163035146,0,-43.4803339237345,-0.385017029818766,0,-19.8136672570679,-0.385017029818842,0,12.1863327429321,-0.385017029818945,0,35.8529994095988,-0.385017029819022,0,35.8529994095988,10.9483163035143,0,12.1863327429322,10.9483163035144,0,-19.8136672570678,10.9483163035145,0]},{"id":"326794","roomnumber":"8","roomname":"Room 8","roomvertices":[-34.1470005904011,34.9483163035146,0,-43.4803339237345,34.9483163035146,0,-43.4803339237345,28.2816496368479,0,-43.4803339237345,23.1149829701812,0,-34.1470005904012,23.1149829701812,0]},{"id":"326957","roomnumber":"9","roomname":"Room 9","roomvertices":[-44.1470005904012,13.6435238395434,0,-44.1470005904012,22.7816496368479,0,-44.1470005904012,27.8472411792342,0,-50.241814707758,26.2141406584706,0,-50.241814707758,17.1623664108601,0]}]}');
+    data = <?php echo($jsondata); ?>;
+    
+    // get levels
+    var levels = getLevels(data);
+    //console.log(levels);
+    // add levels to sidenav
+    createSideNavATags(levels, data, paper);
+    
+		roomtransform = drawRoomsFromBulkJson(levels[0],paper,data);
+		console.log("roomtransform:"+roomtransform);
+		//drawDoorsFromBulkJson(levels[0],data,paper,roomtransform);
+		//roomTransform = drawRooms(data, paper);
+		
+		//drawDoors(data,paper, roomTransform);
+		
+	}
+	
+	// function to combine paths
+	Raphael.st.compoundPath = function(){
+			var positions = [];
+			this.forEach( function( element ){
+					positions.push( element.compoundPath() );
+			});
+			return positions.join('');
+	} 
+	Raphael.el.compoundPath = function(){
+			var path = this.attr('path');
+			return path ? Raphael.parsePathString( path ).join('') : '';
+	}
+	// end function
+	
+	function createSideNavATags(levels, data, paper){
+		var sidenav = document.getElementById("mySidenav");
+		if(levels.length<1){ alert("No Levels Found!");return;}
+		for(var i=0;i<levels.length;i++){
+			var aTag = document.createElement('a');
+			aTag.setAttribute('href',"javascript:drawRoomsFromLevel(\""+levels[i]+"\");");
+			aTag.innerHTML = levels[i];
+			sidenav.appendChild(aTag);
+		}
+	}
+	
+	function drawRoomsFromLevel(levelName){
+		paper.clear();
+		drawRoomsFromBulkJson(levelName,paper,data);
+	}
+	
+	function getLevels(data){
+		var levels = []
+		var lookup = {};
+		for(var i=0;i<data.length;i++)
+		{
+			var name = data[i].levelName;
+			if(typeof name=='undefined'){continue;}
+			if(!(name in lookup)){
+				lookup[name]=1;
+				levels.push(name);
+			}
+		}
+		return levels.sort();
+	}
+
+	
+	function drawRoomsFromBulkJson(levelName,paper,data,){
+		var roomsOnLevel = data.filter(obj=>{
+				return obj.levelName===levelName
+			});
+		var rooms = roomsOnLevel.filter(obj=>{
+			return obj.category==="Rooms"
+		});
+		svgpaths = [];
+		maxX=maxY=minX=minY=0;
+		for(var i=0;i<rooms.length;i++){
+			paths = rooms[i].svgPaths;
+			// figure out max and mins
+			for(var j=0;j<paths.length;j++){
+				// trim all characters from string to get coordinates
+				var path = paths[j].replace(/\D/,'');
+				var coords = path.split(' ');
+				for(k=0;k<coords.length;k++){
+					var xy = coords[k].split(',');
+					//console.log(xy);
+					if(xy[0]<minX){minX = xy[0];}
+					else if(xy[0]>maxX){maxX = xy[0];}
+					if(xy[1]<minY){minY = xy[1];}
+					else if(xy[1]>maxY){maxY = xy[1];}
+				}
+				svgpaths.push(paths[j]);
+			}
+		}
+		
+		w = maxX-minX+0; console.log(w);
+		h = maxY-minY+100; console.log(h);
+		paper.setViewBox(0, 0, w, h, true);
+		transform = "t"+w/2+","+h/2;
+		// draw paths
+		/*
+		for(i=0;i<svgpaths.length;i++){
+			console.log(svgpaths[i]);
+			paper.path(svgpaths[i]).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.25).attr("fill", "#f00");;
+		}
+		*/
+		for(var i=0;i<rooms.length;i++){
+			if(rooms[i].svgPaths.length==1)
+			{
+				paper.path(rooms[i].svgPaths[0]).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.25).attr("fill", "#f00");;
+			}
+			else{
+				// add paths together
+				var compoundpath = rooms[i].svgPaths[0];
+				for(var j=1;j<rooms[i].svgPaths.length;j++){
+					compoundpath=compoundpath+"+"+rooms[i].svgPaths[j];
+				}
+				paper.path(compoundpath).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.25).attr("fill", "#f00");;
+			}
+		}
+		drawDoorsFromBulkJson(levelName,data,paper,transform);
+		return transform;
+	}
+	
+	function drawDoorsFromBulkJson(levelName,data,paper,roomTransform){
+		var doorsOnLevel = data.filter(obj=>{
+				return obj.levelName===levelName
+			});
+		var doors = doorsOnLevel.filter(obj=>{
+			return obj.category==="Doors"
+		});
+		for(i=0;i<doors.length;i++){
+			door = doors[i];
+			if(door.location!=null){
+				var x = door.location.X;
+				var y = door.location.Y;
+				paper.circle(x,y,door.width/2).transform(roomTransform).attr("stroke","#ffffff").attr("stroke-width", 0.25);
+			}
+		}
+	}
+  
+  
+	
+	function drawDoors(data, paper,roomTransform){
+		var doors = eval(data.doors);
+		for(i=0;i<doors.length;i++){
+			door = doors[i];
+			x=door.location.split(',')[0];
+			y=door.location.split(',')[1];
+			paper.circle(x,y,door.width).transform(roomTransform).attr("stroke","#ffffff").attr("stroke-width", 0.25);
+		}
+	}
+	
+	
+	function drawRooms(data, paper){
+		var rooms = eval(data.rooms);
+		svgpaths = [];
+		maxX=maxY=minX=minY=0;
+		for(var i=0;i<rooms.length;i++){
+			nums = rooms[i].roomvertices;
+			path = 'M';
+			j=0;
+			while(j<nums.length){
+				path+=nums[j]+','+nums[j+1]+' ';
+				j+=3;
+				// check for max and min
+				if(nums[j]>maxX){maxX = nums[j];}
+				else if(nums[j]<minX){minX = nums[j];}
+				if(nums[j+1]>maxY){maxY = nums[j+1];}
+				else if(nums[j+1]<minY){minY = nums[j+1];}
+			}
+			path=path.substring(0, path.length-1);
+			path+='Z';
+			console.log(path);
+			// draw
+			svgpaths.push(path);
+		}
+		
+		w = maxX-minX+20; console.log(w);
+		h = maxY-minY+20; console.log(h);
+		paper.setViewBox(0, 0, w, h, true);
+		transform = "t"+w/2+","+h/2;
+		// draw paths
+		for(i=0;i<svgpaths.length;i++){
+			paper.path(svgpaths[i]).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.25);
+		}
+		return transform;
+	}
+		
+  </script>
+  
+</head>
+<body>
+	
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	</div>
+	<div style="font-size:30px;cursor:pointer;background-color:orange;" onclick="openNav()">&#9776;</div>
+
+<div id="wrap"></div>
+
+	<script>
+		function openNav() {
+				document.getElementById("mySidenav").style.width = "250px";
+		}
+
+		function closeNav() {
+				document.getElementById("mySidenav").style.width = "0";
+		}
+	</script>
+	
+</body>
+
+
+
+
+</html>
