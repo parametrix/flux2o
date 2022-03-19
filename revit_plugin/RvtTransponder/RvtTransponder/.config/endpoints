@@ -1,4 +1,4 @@
 ﻿GuidString;2BB18D10-1550-4FD9-B8FC-516B8B828395
-MySqlEndPoint;http://flux2o.ml/rvttransponder_02/html/postData.php
-ProjectRegistrationEndPoint;http://flux2o.ml/rvttransponder_02/html/registerProject.php
-IndexEndPoint;http://flux2o.ml/rvttransponder_02/html/index.php
+MySqlEndPoint;https://spicetools.app/rvttransponder_02/html/postData.php
+ProjectRegistrationEndPoint;https://spicetools.app/rvttransponder_02/html/registerProject.php
+IndexEndPoint;https://spicetools.app/rvttransponder_02/html/index.php

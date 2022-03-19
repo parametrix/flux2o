@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <AddInId>C3CC0424-DD88-4271-9A07-ED5A71AF968B</AddInId>
+    <Name>RvtTransponder</Name>
+    <Assembly>RvtTransponder.bundle\Content\2022\RvtTransponder.dll</Assembly>
+    <FullClassName>RvtTransponder.App</FullClassName>
+    <VendorId>PMTX</VendorId>
+    <VendorDescription>https://parametrix.github.io</VendorDescription>
+  </AddIn>
+  <AddIn Type="Command">
+    <AddInId>E4CD774D-1EC1-4E4A-996E-A65B1BE004B0</AddInId>
+    <Name>Cmd_UploadProject</Name>
+    <Assembly>RvtTransponder.bundle\Content\2022\RvtTransponder.dll</Assembly>
+    <FullClassName>RvtTransponder.Cmd_UploadProject</FullClassName>
+    <VendorId>PMTX</VendorId>
+    <VendorDescription>https://parametrix.github.io</VendorDescription>
+  </AddIn>
+  <AddIn Type="Command">
+    <AddInId>796BE551-27A3-47FB-8635-9B85C54A0171</AddInId>
+    <Name>Cmd_RegisterProject</Name>
+    <Assembly>RvtTransponder.bundle\Content\2022\RvtTransponder.dll</Assembly>
+    <FullClassName>RvtTransponder.Cmd_RegisterProject</FullClassName>
+    <VendorId>PMTX</VendorId>
+    <VendorDescription>https://parametrix.github.io</VendorDescription>
+  </AddIn>
+</RevitAddIns>

@@ -1,20 +1,38 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RvtTransponder", "RvtTransponder\RvtTransponder.csproj", "{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		2019|x64 = 2019|x64
+		2020|x64 = 2020|x64
+		2021|x64 = 2021|x64
+		2022|x64 = 2022|x64
 		Debug2017|x64 = Debug2017|x64
+		Debug2020|x64 = Debug2020|x64
+		Debug2021|x64 = Debug2021|x64
+		Debug2022|x64 = Debug2022|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2019|x64.ActiveCfg = 2019|x64
 		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2019|x64.Build.0 = 2019|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2020|x64.ActiveCfg = 2020|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2020|x64.Build.0 = 2020|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2021|x64.ActiveCfg = 2021|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2021|x64.Build.0 = 2021|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2022|x64.ActiveCfg = 2022|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.2022|x64.Build.0 = 2022|x64
 		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2017|x64.ActiveCfg = Debug2017|x64
 		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2017|x64.Build.0 = Debug2017|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2020|x64.ActiveCfg = Debug2020|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2020|x64.Build.0 = Debug2020|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2021|x64.ActiveCfg = Debug2021|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2021|x64.Build.0 = Debug2021|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2022|x64.ActiveCfg = Debug2022|x64
+		{F265DA71-A28C-494C-8FA0-0AEF12CBFFCE}.Debug2022|x64.Build.0 = Debug2022|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
