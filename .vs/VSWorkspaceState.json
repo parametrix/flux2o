@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\revit_plugin",
+    "\\revit_plugin\\RvtTransponder",
+    "\\revit_plugin\\RvtTransponder\\RvtTransponder"
+  ],
+  "SelectedNode": "\\revit_plugin\\RvtTransponder\\RvtTransponder.sln",
+  "PreviewInSolutionExplorer": false
+}

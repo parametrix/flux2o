@@ -11,7 +11,7 @@ namespace RvtTransponder.DataModels
             FamilyInstance fi = element as FamilyInstance;
             Category = element.Category.Name;
             Name = element.Name;
-            LevelName = element.Document.GetElement(element.LevelId).Name;
+            LevelName = element.Document.GetElement(element.LevelId)?.Name;
             //ProjectId = element.Document.ProjectInformation.UniqueId.Replace("-", "").Substring(0, 16);
             ProjectId = TransponderUtils.GetProjectGUID(element.Document);
             var location = element.Location;
