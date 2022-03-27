@@ -1,6 +1,7 @@
 <?php header('Content-type: text/html; charset=utf-8'); ?>
 
 <link rel="stylesheet" type="text/css" href="css/viewer_styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script src="js/raphael.min.js" ></script>
 
@@ -23,6 +24,24 @@
     
     <h4>LEVELS:</h4>
     <div id="levelSelector">
+      <hr>  x </hr>
+    </div>
+    <h4>ADJUST EXTENTS:</h4>
+    <div id="canvasExtentsControl">
+      <p>W: </p>
+      <button class="buttonZoom" type="button" onclick="increaseWidth()">+</button>
+      <button class="buttonZoom" type="button" onclick="decreaseWidth()">-</button>
+      <i style="font-size:24px;color:white;margin=4px" class="fa" onclick="resetWidth()" >&#xf021;</i>
+      <p>H: </p>
+        <button class="buttonZoom" type="button" onclick="increaseHeight()">+</button>
+        <button class="buttonZoom" type="button" onclick="decreaseHeight()">-</button>
+        <i style="font-size:24px;color:white;margin=4px" class="fa" onclick="resetHeight()" >&#xf021;</i>
+    </div>
+    <h4>ADJUST SCALE FACTOR:</h4>
+    <div id="canvasScaleControl">
+      <button class="buttonZoom" type="button" onclick="increaseScaleFactor()">+</button>
+      <button class="buttonZoom" type="button" onclick="decreaseScaleFactor()">-</button>
+      <i style="font-size:24px;color:white;margin=4px" class="fa" onclick="resetScaleFactor()" >&#xf021;</i>
     </div>
 	</div>
 	<div style="font-size:30px;cursor:pointer;background-color:#666666;" onclick="openNav()">&#9776;</div>
@@ -34,7 +53,7 @@
   <!--SIDE MENU SCRIPT-->
 	<script>
 		function openNav() {
-				document.getElementById("mySidenav").style.width = "250px";
+				document.getElementById("mySidenav").style.width = "300px";
 		}
 
 		function closeNav() {
@@ -49,8 +68,12 @@
     var rooms;
     var doors;
     var levels;
+    var curr_level;
     var furnishings;
-    
+    var default_widthAdj=default_heightAdj=25;
+    var widthAdj=default_widthAdj; var heightAdj=default_heightAdj;
+    var scaleFactor=default_scaleFactor=2.75;
+    var default_scaleFactor_increment=0.5;
     <!-- DOCUMENT ONLOAD -->
     window.onload = function() {
       paper = Raphael("wrap");
@@ -93,7 +116,7 @@
       furnishings = project_json.filter(x=>x.category!=="Doors" && x.category!=="Rooms");
       createSideNavATags(levels, project_json, paper);
       // draw plan for first level
-      drawRoomsOnLevel(levels[0])
+      drawRoomsOnLevel(levels[0]);
     }
     
     <!-- HELPER FUNCTION GET LEVELS FROM JSON -->
@@ -130,6 +153,7 @@
     
     <!-- DRAW ROOMS ON LEVEL -->
     function drawRoomsOnLevel(levelName){
+      curr_level = levelName;
       paper.clear();
       var roomsOnLevel = project_json.filter(obj=>{
         return obj.levelName===levelName
@@ -162,15 +186,16 @@
       minX = Math.min(...xcoords);
       maxY = Math.max(...ycoords);
       minY = Math.min(...ycoords);
-      console.log(maxX);
-      console.log(minX);
-      console.log(maxY);
-      console.log(minY);
+      console.log('maxX='+maxX);
+      console.log('minX='+minX);
+      console.log('maxY='+maxY);
+      console.log('minY='+minY);
       // GET TRANSFORM FOR VIEW BOX
-      w = maxX-minX+25; //console.log(w);
-      h = maxY-minY+25; //console.log(h);
+      w = maxX-minX+widthAdj; console.log('w='+w);
+      h = maxY-minY+heightAdj; console.log('h='+h);
       paper.setViewBox(0, 0, w, h, true);
-      transform = "t"+w/2.75+","+h/2.60;
+      //transform = "t"+w/2.75+","+h/2.60;
+      transform = "t"+w/scaleFactor+","+h/scaleFactor;
       // DRAW PATHS
       for(var i=0;i<rooms.length;i++){
         //console.log(rooms[i]);
@@ -197,6 +222,53 @@
       getUpdates(transform,levelName);
       
       //drawFurnishing(levelName); //- DOES NOT TRANSFORM CORRECTLY
+    }
+
+    <!-- ADJUST WIDTH AND HEIGHT -->
+    
+    function increaseWidth(){
+      widthAdj=widthAdj+default_widthAdj;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    function decreaseWidth(){
+      widthAdj=widthAdj-default_widthAdj;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    function resetWidth(){
+      widthAdj = default_widthAdj;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    function increaseHeight(){
+      heightAdj=heightAdj+default_heightAdj;
+      drawRoomsOnLevel(curr_level);
+    }
+    function decreaseHeight(){
+      heightAdj=heightAdj-default_heightAdj;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    function resetHeight(){
+      heightAdj=default_heightAdj;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    <!-- ADJUST SCALE FACTOR -->
+    function increaseScaleFactor(){
+      scaleFactor=scaleFactor+default_scaleFactor_increment;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    function decreaseScaleFactor(){
+      scaleFactor=scaleFactor-default_scaleFactor_increment;
+      drawRoomsOnLevel(curr_level);
+    }
+
+    function resetScaleFactor(){
+      scaleFactor=default_scaleFactor;
+      drawRoomsOnLevel(curr_level);
     }
     
     <!-- DRAW DOORS ON LEVEL ********** called from drawRooms()-->
