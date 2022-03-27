@@ -11,11 +11,17 @@
 	<div id="mySidenav" class="sidenav">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!-- PROJECT SELECTOR ELEMENT -->
+    <hr>
+    <h1>flux2o</h1>
+    <hr>
+    <h4>PROJECTS:</h4>
     <select onchange="selectProject(this.value)" id="projectSelector" >
       <?php foreach($projects as $project):?>
         <option value=<?php echo $project['uid'];?>><?php echo $project['filename']; ?></option>
       <?php endforeach; ?>
     </select>
+    
+    <h4>LEVELS:</h4>
     <div id="levelSelector">
     </div>
 	</div>
@@ -167,9 +173,11 @@
       transform = "t"+w/2.75+","+h/2.60;
       // DRAW PATHS
       for(var i=0;i<rooms.length;i++){
+        //console.log(rooms[i]);
+        
         if(rooms[i].svgPaths.length==1)
         {
-          paper.path(rooms[i].svgPaths[0]).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.35);
+          paper.path(rooms[i].svgPaths[0]).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.35).attr("fill","#ffffcc").attr("fill-opacity","0.15");
         }
         else{
           // add paths together
@@ -177,13 +185,18 @@
           for(var j=1;j<rooms[i].svgPaths.length;j++){
             compoundpath=compoundpath+"+"+rooms[i].svgPaths[j];
           }
-          paper.path(compoundpath).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.45);
+          paper.path(compoundpath).transform(transform).attr("stroke","#ffffff").attr("stroke-width", 0.45).attr("fill","#ffffcc").attr("fill-opacity","0.15");
         }
+        var name = rooms[i].name.toUpperCase();
+        var loc = rooms[i].location;
+        paper.text(loc.X,loc.Y,name).transform(transform).attr("font-family","Arial").attr("font-size","2"); 
       }
       // now draw doors
       drawDoors(transform, levelName);
-      //drawFurnishing(transform, levelName); //- DOES NOT TRANSFORM CORRECTLY
+      
       getUpdates(transform,levelName);
+      
+      //drawFurnishing(levelName); //- DOES NOT TRANSFORM CORRECTLY
     }
     
     <!-- DRAW DOORS ON LEVEL ********** called from drawRooms()-->
@@ -205,7 +218,7 @@
     }
     
     <!-- DRAW FURNISHINGS ON LEVEL ********** called from drawRooms()--!!!!!!!!! DOES NOT TRANSFORM CORRECTLY>
-    function drawFurnishing(roomtransform,levelName){
+    function drawFurnishing(levelName){
       var furnOnLevel = furnishings.filter(obj=>{
         return obj.levelName===levelName
       });
@@ -218,11 +231,16 @@
         for(j=1;j<furn['svgPaths'].length;j++){
           compoundpath=compoundpath+"+"+furn['svgPaths'][j];
         }
-        console.log(compoundpath);
-        paper.path(compoundpath).transform(roomtransform).attr("stroke","#ffffff").attr("stroke-width", 0.15);
+        //console.log(compoundpath);
+        var loc = furn.location;
+        var rotation = Math.degrees(furn.rotation);
+        var symbol = paper.path(compoundpath).attr("stroke","#ffffff").attr("stroke-width", 0.15).attr("fill","#ffffcc").attr("fill-opacity","0.15").attr("title",furn.uid);
+        //symbol.transform("t0,0");
         // try drawing symbols for furniture
         var loc = furn['location'];  
-        paper.circle(loc.X,loc.Y,2).transform(roomtransform);
+        paper.circle(loc.X,loc.Y,2).transform(transform).attr("fill","#ffffcc").attr("fill-opacity","0.15").attr("title",furn.uid);
+        symbol.transform(transform);
+        
       }
     }
     
@@ -266,5 +284,19 @@
         paper.path(path_str).transform(transform).attr("stroke","#f00").attr("stroke-width", 0.25);;
       }
     }
+    
+    
+    // ******************** UTILITY FUNCTIONS *******************/
+    // Converts from degrees to radians.
+    // from: http://cwestblog.com/2012/11/12/javascript-degree-and-radian-conversion/
+    Math.radians = function(degrees) {
+      return degrees * Math.PI / 180;
+    };
+     
+    // Converts from radians to degrees.
+    Math.degrees = function(radians) {
+      return radians * 180 / Math.PI;
+    };
+    
     
 </script>
